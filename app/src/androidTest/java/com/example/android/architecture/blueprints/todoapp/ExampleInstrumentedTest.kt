@@ -13,6 +13,12 @@ import org.junit.Assert.*
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
+
+//InstrumentedTest is a "Integration Test", these tests run on real or emulated Android devices
+//so these tests reflect what will happen on the real world, but they're a bit slower than Unit Tests
+//these tests have much more fidelity, but the tradeoff is that they're slow
+//"fidelity" term in programming and testing jargon means how "real world" a thing is
+
 @RunWith(AndroidJUnit4::class)
 class ExampleInstrumentedTest {
     @Test
