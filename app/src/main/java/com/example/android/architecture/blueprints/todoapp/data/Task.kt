@@ -36,14 +36,15 @@ data class Task @JvmOverloads constructor(
     @ColumnInfo(name = "completed") var isCompleted: Boolean = false,
     @PrimaryKey @ColumnInfo(name = "entryid") var id: String = UUID.randomUUID().toString()
 ) {
-
     val titleForList: String
         get() = if (title.isNotEmpty()) title else description
-
+    //set titleForList's value to the tile if it's not empty, or the description if the title is empty
 
     val isActive
         get() = !isCompleted
+    //set isActive to be the inverse value of isCompleted
 
     val isEmpty
         get() = title.isEmpty() || description.isEmpty()
+    //set is Empty when the title and description are empty
 }

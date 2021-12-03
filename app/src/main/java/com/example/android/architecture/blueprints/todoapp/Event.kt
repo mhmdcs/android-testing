@@ -22,6 +22,14 @@ import androidx.lifecycle.Observer
  */
 open class Event<out T>(private val content: T) {
 
+    //Navigation is triggered in the viewmodels using the Event class here
+    //the Event class helps make LiveData represent one-time events, like navigation, or a snackbar pop-up
+
+    //essentially, Event class keeps track of whether or not an event has been handled using boolean
+    //an event holds some data (here data is the private val content: T in the constructor)
+    //and as long as you access data using getContentIfNotHandled, it ensures that the event is only handled once
+
+
     @Suppress("MemberVisibilityCanBePrivate")
     var hasBeenHandled = false
         private set // Allow external read but not write

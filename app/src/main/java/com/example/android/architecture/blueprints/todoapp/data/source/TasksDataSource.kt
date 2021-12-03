@@ -24,6 +24,8 @@ import com.example.android.architecture.blueprints.todoapp.data.Task
  */
 interface TasksDataSource {
 
+    //both TasksRemoteDataSource and TasksLocalDataSource use this interface
+    //so they have the same methods
 
     fun observeTasks(): LiveData<Result<List<Task>>>
 

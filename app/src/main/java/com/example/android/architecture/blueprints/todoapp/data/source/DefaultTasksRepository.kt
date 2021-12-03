@@ -35,6 +35,9 @@ import kotlinx.coroutines.withContext
  */
 class DefaultTasksRepository private constructor(application: Application) {
 
+    //the repository coordinates (mediates) between local and remote data sources
+    //the data that the repository returns goes to the viewmodels
+
     private val tasksRemoteDataSource: TasksDataSource
     private val tasksLocalDataSource: TasksDataSource
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO

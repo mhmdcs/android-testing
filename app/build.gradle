@@ -24,6 +24,8 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 
+
+
     buildTypes {
         release {
             minifyEnabled false
@@ -38,7 +40,15 @@ android {
     buildFeatures {
         dataBinding true
     }
+
+    // Always show the result of every unit test when running via command line, even if it passes.
+    testOptions.unitTests {
+        includeAndroidResources = true
+    }
+
 }
+
+
 
 dependencies {
 
@@ -68,6 +78,13 @@ dependencies {
     // Dependencies for local unit tests. Hamcrest assertion framework is optional for more readable tests
     testImplementation "junit:junit:$junitVersion"
     testImplementation "org.hamcrest:hamcrest-all:$hamcrestVersion"
+
+    //AndroidX Test - JVM local unit testing, allows you to use Android class code on unit tests
+    testImplementation "androidx.test:core-ktx:$androidXTestCoreVersion"
+    testImplementation "org.robolectric:robolectric:$robolectricVersion" //Robolectric library creates a simulated Android environment specifically for local tests
+    testImplementation "androidx.test.ext:junit-ktx:$androidXTestExtKotlinRunnerVersion"
+
+
 
     // AndroidX Test - Instrumented testing
     androidTestImplementation "androidx.test.ext:junit:$androidXTestExtKotlinRunnerVersion"
