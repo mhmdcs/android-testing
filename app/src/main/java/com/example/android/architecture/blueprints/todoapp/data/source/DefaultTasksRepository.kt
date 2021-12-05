@@ -67,12 +67,12 @@ class DefaultTasksRepository private constructor(application: Application) {
     suspend fun getTasks(forceUpdate: Boolean = false): Result<List<Task>> {
         if (forceUpdate) {
             try {
-                updateTasksFromRemoteDataSource()
+                updateTasksFromRemoteDataSource() //making network calls
             } catch (ex: Exception) {
                 return Result.Error(ex)
             }
         }
-        return tasksLocalDataSource.getTasks()
+        return tasksLocalDataSource.getTasks() //read from SQL database
     }
 
     suspend fun refreshTasks() {

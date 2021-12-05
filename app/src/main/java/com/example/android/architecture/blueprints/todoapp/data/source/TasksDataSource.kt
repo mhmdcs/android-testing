@@ -27,6 +27,8 @@ interface TasksDataSource {
     //both TasksRemoteDataSource and TasksLocalDataSource use this interface
     //so they have the same methods
 
+    //this interface basically defines the API of the DataSource for Remote and Local Data Sources
+
     fun observeTasks(): LiveData<Result<List<Task>>>
 
     suspend fun getTasks(): Result<List<Task>>
