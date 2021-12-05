@@ -75,6 +75,7 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
 
+
     // Dependencies for local unit tests. Hamcrest assertion framework is optional for more readable tests
     testImplementation "junit:junit:$junitVersion"
     testImplementation "org.hamcrest:hamcrest-all:$hamcrestVersion"
@@ -83,6 +84,10 @@ dependencies {
     testImplementation "androidx.test:core-ktx:$androidXTestCoreVersion"
     testImplementation "org.robolectric:robolectric:$robolectricVersion" //Robolectric library creates a simulated Android environment specifically for local tests
     testImplementation "androidx.test.ext:junit-ktx:$androidXTestExtKotlinRunnerVersion"
+
+    //InstantTaskExecutorRule dependency for testing LiveData
+    testImplementation "androidx.arch.core:core-testing:$archTestingVersion"
+
 
 
 
