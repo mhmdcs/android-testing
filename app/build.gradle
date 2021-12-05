@@ -88,6 +88,8 @@ dependencies {
     //InstantTaskExecutorRule dependency for testing LiveData
     testImplementation "androidx.arch.core:core-testing:$archTestingVersion"
 
+    //testing coroutines dependency
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
 
 
 
