@@ -10,7 +10,7 @@ import com.example.android.architecture.blueprints.todoapp.data.Task
 //add a parameter to the class of MutableList type and set its default value to an empty MutableList, and implement TasksDataSource API
 class FakeDataSource(var  tasks: MutableList<Task>? = mutableListOf()): TasksDataSource {
 
-    //write fake version of the methods with "real enough" and "working" implementation
+    //write fake version of the methods with "real enough" and "working" implementation, but much less complicated than the real one.
 
     override suspend fun getTasks(): Result<List<Task>> {
         //If tasks isn't null, you should return a Success result. If tasks is null, then you should return an Error result.
