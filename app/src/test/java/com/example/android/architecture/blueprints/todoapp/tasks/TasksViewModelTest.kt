@@ -6,9 +6,9 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.android.architecture.blueprints.todoapp.Event
 import com.example.android.architecture.blueprints.todoapp.getOrAwaitValue
-import org.hamcrest.CoreMatchers.not
-import org.hamcrest.CoreMatchers.nullValue
+import org.hamcrest.CoreMatchers.*
 import org.junit.Assert.*
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -17,6 +17,20 @@ import org.junit.runner.RunWith
 //Add the AndoirdJUnit4 test runner
 @RunWith(AndroidJUnit4::class)
 class TasksViewModelTest {
+
+
+    //use the @Before rule annotation to create a setup method and remove repeated code. Since all of these tests are going to test the TasksViewModel and will need a view model, move the ViewModel initialization code to @Before block.
+
+    // Subject under test
+    private lateinit var tasksViewModel: TasksViewModel
+    //Warning. Do NOT initialize the tasksViewModel above, and instead initialize it within the @Before rule block
+    //Or it will cause the same instance of the ViewModel to be used for all tests. This is something you should avoid because each test should have a fresh instance of the subject under test (the ViewModel in this case).
+
+    @Before
+    fun setupViewModel() {
+        tasksViewModel = TasksViewModel(ApplicationProvider.getApplicationContext())
+    }
+
 
 
     //create LiveDataTestUtil.kt file class so you can use the getOrAwaitValue Kotlin extension function
@@ -47,27 +61,27 @@ class TasksViewModelTest {
 
 
         //GIVEN a fresh TasksViewModel
-        val taskViewModel = TasksViewModel(ApplicationProvider.getApplicationContext())
+        // val tasksViewModel = TasksViewModel(ApplicationProvider.getApplicationContext()) this initialization is now in a @Before rule block
 
         //create observer dummy - no need for it to do anything!
         val observer  = Observer<Event<Unit>> {}
         try {
 
             //observe LiveData forever
-            taskViewModel.newTaskEvent.observeForever(observer)
+            tasksViewModel.newTaskEvent.observeForever(observer)
 
             //WHEN adding a new task
-            taskViewModel.addNewTask()
+            tasksViewModel.addNewTask()
 
 
             //THEN the new task event is triggered
             //now because newTaskEvent is being observed, I can now get the value from it, and write an assert statement
-            val value = taskViewModel.newTaskEvent.value
+            val value = tasksViewModel.newTaskEvent.value
             assertThat(value?.getContentIfNotHandled(),not(nullValue())) //because we're testing an Event, we use getContentIfNotHandled in the assert statement
 
         } finally {
             //to make sure the removal of the observer absolutely happens, we put it in a finally block, after the try block
-        taskViewModel.newTaskEvent.removeObserver(observer)
+            tasksViewModel.newTaskEvent.removeObserver(observer)
         }
 
     }
@@ -79,16 +93,31 @@ class TasksViewModelTest {
     fun addNewTask_setNewTaskEvent(){
 
         //GIVEN a fresh TasksViewModel
-        val taskViewModel = TasksViewModel(ApplicationProvider.getApplicationContext())
+        // val tasksViewModel = TasksViewModel(ApplicationProvider.getApplicationContext()) this initialization is now in a @Before rule block
 
         //WHEN adding a new task
-        taskViewModel.addNewTask()
+        tasksViewModel.addNewTask()
 
 
         //THEN the new task event is triggered
-        val value = taskViewModel.newTaskEvent.getOrAwaitValue()//Observe and get the LiveData value for newTaskEvent using getOrAwaitValue extension function
+        val value = tasksViewModel.newTaskEvent.getOrAwaitValue()//Observe and get the LiveData value for newTaskEvent using getOrAwaitValue extension function
         assertThat(value.getContentIfNotHandled(),not(nullValue())) //because we're testing an Event, we use getContentIfNotHandled in the assert statement
 
+    }
+
+
+    //write a test for the TasksAddViewVisible LiveData. This test should check that if you've set your filter type to show all tasks, then the Add task FAB button is visible.
+    @Test
+    fun setFilterAllTasks_tasksAddViewVisible(){
+        //GIVEN a fresh ViewModel
+       // val tasksViewModel = TasksViewModel(ApplicationProvider.getApplicationContext()) this initialization is now in a @Before rule block
+
+        //WHEN the filter type is ALL_TASKS
+        tasksViewModel.setFiltering(TasksFilterType.ALL_TASKS)
+
+        //THEN the "Add task" action is visible
+        val value = tasksViewModel.tasksAddViewVisible.getOrAwaitValue()
+        assertThat(value,`is`(true))
     }
 
 
