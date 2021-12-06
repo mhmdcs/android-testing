@@ -5,6 +5,8 @@ import androidx.lifecycle.Observer
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.android.architecture.blueprints.todoapp.Event
+import com.example.android.architecture.blueprints.todoapp.data.Task
+import com.example.android.architecture.blueprints.todoapp.data.source.FakeTestRepository
 import com.example.android.architecture.blueprints.todoapp.getOrAwaitValue
 import org.hamcrest.CoreMatchers.*
 import org.junit.Assert.*
@@ -14,8 +16,8 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 
-//Add the AndoirdJUnit4 test runner
-@RunWith(AndroidJUnit4::class)
+//Add the AndoirdJUnit4 test runner if you're using AndroidX test library code
+//@RunWith(AndroidJUnit4::class)
 class TasksViewModelTest {
 
 
@@ -26,12 +28,29 @@ class TasksViewModelTest {
     //Warning. Do NOT initialize the tasksViewModel above, and instead initialize it within the @Before rule block
     //Or it will cause the same instance of the ViewModel to be used for all tests. This is something you should avoid because each test should have a fresh instance of the subject under test (the ViewModel in this case).
 
+    // Use a fake repository to be injected into the viewmodel
+    private lateinit var tasksRepository: FakeTestRepository
+
+
+    //This ViewModel construction for testing used the AndroidX Test library, since we're now instead passing in the repository in the ViewModel instead of the application context, we won't need the AndroidX Test library or the @RunWith(AndroidJUnit4::class) annotation, this will speed up the testing performance
+//    @Before
+//    fun setupViewModel() {
+//        tasksViewModel = TasksViewModel(ApplicationProvider.getApplicationContext())
+//    }
+
+    //in setupViewModel method now it initializes the FakeTestRepository with three tasks and then constructs the tasksViewModel with this repository.
     @Before
     fun setupViewModel() {
-        tasksViewModel = TasksViewModel(ApplicationProvider.getApplicationContext())
+        // We initialise the tasks to 3, with one active and two completed
+        tasksRepository = FakeTestRepository()
+        val task1 = Task("Title1", "Description1")
+        val task2 = Task("Title2", "Description2", true)
+        val task3 = Task("Title3", "Description3", true)
+        tasksRepository.addTasks(task1, task2, task3)
+
+        tasksViewModel = TasksViewModel(tasksRepository)
+
     }
-
-
 
     //create LiveDataTestUtil.kt file class so you can use the getOrAwaitValue Kotlin extension function
 
