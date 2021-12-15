@@ -30,9 +30,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.android.architecture.blueprints.todoapp.EventObserver
 import com.example.android.architecture.blueprints.todoapp.R
+import com.example.android.architecture.blueprints.todoapp.TodoApplication
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.DefaultTasksRepository
 import com.example.android.architecture.blueprints.todoapp.databinding.TasksFragBinding
+import com.example.android.architecture.blueprints.todoapp.taskdetail.TaskDetailViewModel
 import com.example.android.architecture.blueprints.todoapp.util.setupRefreshLayout
 import com.example.android.architecture.blueprints.todoapp.util.setupSnackbar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -46,7 +48,8 @@ class TasksFragment : Fragment() {
 
     //The expression after "by" is a delegate property
     private val viewModel by viewModels<TasksViewModel>(){
-        TasksViewModel.TasksViewModelFactory(DefaultTasksRepository.getRepository(requireActivity().application))
+      //  TasksViewModel.TasksViewModelFactory(DefaultTasksRepository.getRepository(requireActivity().application)) //this used the repository from getRepository method from the companion object in DefaultTasksRepository that we commented out
+        TasksViewModel.TasksViewModelFactory((requireContext().applicationContext as TodoApplication).taskRepository) //this uses the repository from the ServiceLocator that's used in the ToDoApplication application class
     }
 
     private val args: TasksFragmentArgs by navArgs()

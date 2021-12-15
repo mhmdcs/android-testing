@@ -28,6 +28,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.android.architecture.blueprints.todoapp.EventObserver
 import com.example.android.architecture.blueprints.todoapp.R
+import com.example.android.architecture.blueprints.todoapp.TodoApplication
 import com.example.android.architecture.blueprints.todoapp.data.source.DefaultTasksRepository
 import com.example.android.architecture.blueprints.todoapp.databinding.TaskdetailFragBinding
 import com.example.android.architecture.blueprints.todoapp.tasks.DELETE_RESULT_OK
@@ -46,7 +47,8 @@ class TaskDetailFragment : Fragment() {
 
     //The expression after "by" is a delegate property
     private val viewModel by viewModels<TaskDetailViewModel>(){
-        TaskDetailViewModel.TaskDetailViewModelFactory(DefaultTasksRepository.getRepository(requireActivity().application))
+    //    TaskDetailViewModel.TaskDetailViewModelFactory(DefaultTasksRepository.getRepository(requireActivity().application)) //this used the repository from getRepository method from the companion object in DefaultTasksRepository that we commented out
+        TaskDetailViewModel.TaskDetailViewModelFactory((requireContext().applicationContext as TodoApplication).taskRepository) //this uses the repository from the ServiceLocator that's used in the ToDoApplication application class
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

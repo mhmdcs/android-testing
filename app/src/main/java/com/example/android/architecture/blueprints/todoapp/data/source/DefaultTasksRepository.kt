@@ -41,21 +41,25 @@ class DefaultTasksRepository constructor(private val tasksRemoteDataSource: Task
                                          private val tasksLocalDataSource: TasksDataSource,
                                          private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO) : TasksRepository {
 
-    companion object {
-        @Volatile
-        private var INSTANCE: DefaultTasksRepository? = null
 
-        fun getRepository(app: Application): DefaultTasksRepository {
-            return INSTANCE ?: synchronized(this) {
-                val database = Room.databaseBuilder(app.applicationContext,
-                    ToDoDatabase::class.java, "Tasks.db")
-                    .build()
-                DefaultTasksRepository(TasksRemoteDataSource, TasksLocalDataSource(database.taskDao())).also {
-                    INSTANCE = it
-                }
-            }
-        }
-    }
+    //this companion object where you previously created the repository will no longer be needed
+    //because you're now creating the repository through the ServiceLocator singleton class that's called in the ToDoApplication application class
+//    companion object {
+//        @Volatile
+//        private var INSTANCE: DefaultTasksRepository? = null
+//
+//        fun getRepository(app: Application): DefaultTasksRepository {
+//            return INSTANCE ?: synchronized(this) {
+//                val database = Room.databaseBuilder(app.applicationContext,
+//                    ToDoDatabase::class.java, "Tasks.db")
+//                    .build()
+//                DefaultTasksRepository(TasksRemoteDataSource, TasksLocalDataSource(database.taskDao())).also {
+//                    INSTANCE = it
+//                }
+//            }
+//        }
+//    }
+
 
     override suspend fun getTasks(forceUpdate: Boolean): Result<List<Task>> {
         if (forceUpdate) {

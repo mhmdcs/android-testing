@@ -30,8 +30,8 @@ import kotlinx.coroutines.delay
  */
 object TasksRemoteDataSource : TasksDataSource {
 
-    //simulate network latency (2 seconds delay)
-    private const val SERVICE_LATENCY_IN_MILLIS = 2000L
+    //simulate network latency (1 seconds delay)
+    private const val SERVICE_LATENCY_IN_MILLIS = 1000L
 
     //simulate an online database with a HashMap
     private var TASKS_SERVICE_DATA = LinkedHashMap<String, Task>(2)

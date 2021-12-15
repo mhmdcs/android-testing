@@ -17,6 +17,7 @@
 package com.example.android.architecture.blueprints.todoapp
 
 import android.app.Application
+import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 
@@ -27,6 +28,11 @@ import timber.log.Timber.DebugTree
  * Also, sets up Timber in the DEBUG BuildConfig. Read Timber's documentation for production setups.
  */
 class TodoApplication : Application() {
+
+    //make sure that you make one instance of your repository class for your application
+    //to absolutely ensure this, use the ServiceLocator in the application class here
+    val taskRepository: TasksRepository
+    get() = ServiceLocator.provideTasksRepository(this)
 
     override fun onCreate() {
         super.onCreate()
