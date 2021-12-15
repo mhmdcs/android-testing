@@ -16,7 +16,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 
-//Add the AndoirdJUnit4 test runner if you're using AndroidX test library code
+//Add the AndoirdJUnit4 test runner if you're using AndroidX Test library code
 //@RunWith(AndroidJUnit4::class)
 class TasksViewModelTest {
 

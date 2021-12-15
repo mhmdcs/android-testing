@@ -46,6 +46,11 @@ android {
         includeAndroidResources = true
     }
 
+    packagingOptions {
+        exclude 'META-INF/AL2.0'
+        exclude 'META-INF/LGPL2.1'
+    }
+
 }
 
 
@@ -75,6 +80,14 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
 
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    implementation "androidx.fragment:fragment-ktx:$fragmentKtxVersion"
+
+
+
+
+    //unit test libraries
 
     // Dependencies for local unit tests. Hamcrest assertion framework is optional for more readable tests
     testImplementation "junit:junit:$junitVersion"
@@ -93,11 +106,19 @@ dependencies {
 
 
 
+
+    //instrumented test libraries
+
     // AndroidX Test - Instrumented testing
     androidTestImplementation "androidx.test.ext:junit:$androidXTestExtKotlinRunnerVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
 
-    // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
-    implementation "androidx.fragment:fragment-ktx:$fragmentKtxVersion"
+    // Dependencies for Android instrumented unit tests
+    androidTestImplementation "junit:junit:$junitVersion" //we've implemented this before, but for the test(unit) source set, this uses androidTestImplementation so it'l lbe in the androidTest source set
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion" //we've implemented this before, but for the test(unit) source set, this uses androidTestImplementation so it'l lbe in the androidTest source set
+
+    // Testing code should not be included in the main code.
+    // Once https://issuetracker.google.com/128612536 is fixed this can be fixed.
+    implementation "androidx.fragment:fragment-testing:$fragmentVersion" //this is where the FragmentScenario API is for testing fragments
+    implementation "androidx.test:core:$androidXTestCoreVersion" //we'll use the AndroidJUnit4 Runner so the testing core library is needed
 }
