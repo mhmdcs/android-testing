@@ -111,7 +111,10 @@ dependencies {
 
     // AndroidX Test - Instrumented testing
     androidTestImplementation "androidx.test.ext:junit:$androidXTestExtKotlinRunnerVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion" //this contains all of Espresso's the ViewMatchers, ViewAssertions, etc. It is included by default when you make an Android project,
+
+    //the contrib is made up of external contributions which contains testing code for more advanced views, such as the date-picker and recyclerview, it also contains accessibility checks and a class called "counting idling resources"
+
 
     // Dependencies for Android instrumented unit tests
     androidTestImplementation "junit:junit:$junitVersion" //we've implemented this before, but for the test(unit) source set, this uses androidTestImplementation so it'l lbe in the androidTest source set
