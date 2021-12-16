@@ -81,7 +81,7 @@ class TaskDetailFragmentTest{
         onView(withId(R.id.task_detail_complete_checkbox)).check(matches(isDisplayed()))
         onView(withId(R.id.task_detail_complete_checkbox)).check(matches(not(isChecked())))
 
-        Thread.sleep(3000) //let the execution of the current running thread sleep for 3 seconds to read the view data or read error more appropriately. When running finishing real working tests, don't use Thread.sleep, tests are supposed to run as fast as possible
+        Thread.sleep(2000) //let the execution of the current running thread sleep for 3 seconds to read the view data or read error more appropriately. When running finishing real working tests, don't use Thread.sleep, tests are supposed to run as fast as possible
     }
 
     @Test
@@ -105,6 +105,6 @@ class TaskDetailFragmentTest{
         onView(withId(R.id.task_detail_complete_checkbox)).check(matches(isChecked()))
         onView(withId(R.id.task_detail_complete_checkbox)).check(matches(isDisplayed()))
 
-        Thread.sleep(5000)
+        Thread.sleep(2000)
     }
 }

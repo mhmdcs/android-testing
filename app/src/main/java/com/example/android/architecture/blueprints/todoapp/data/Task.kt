@@ -38,13 +38,13 @@ data class Task @JvmOverloads constructor(
 ) {
     val titleForList: String
         get() = if (title.isNotEmpty()) title else description
-    //set titleForList's value to the tile if it's not empty, or the description if the title is empty
+    //sets titleForList's value to the tile if it's not empty, or the description if the title is empty
 
     val isActive
         get() = !isCompleted
-    //set isActive to be the inverse value of isCompleted
+    //sets isActive to be the inverse value of isCompleted
 
     val isEmpty
         get() = title.isEmpty() || description.isEmpty()
-    //set is Empty when the title and description are empty
+    //sets isEmpty when the title and description are empty
 }

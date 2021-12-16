@@ -107,13 +107,17 @@ dependencies {
 
 
 
-    //instrumented test libraries
+    //integration instrumented test libraries
 
     // AndroidX Test - Instrumented testing
     androidTestImplementation "androidx.test.ext:junit:$androidXTestExtKotlinRunnerVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion" //this contains all of Espresso's the ViewMatchers, ViewAssertions, etc. It is included by default when you make an Android project,
 
-    //the contrib is made up of external contributions which contains testing code for more advanced views, such as the date-picker and recyclerview, it also contains accessibility checks and a class called "counting idling resources"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion" //this contains all of Espresso's the ViewMatchers, ViewAssertions, etc. It is included by default when you make an Android project,
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion" //the contrib is made up of external contributions which contains testing code for more advanced views, such as the date-picker and recyclerview, it also contains accessibility checks and a class called "counting idling resources"
+
+    androidTestImplementation "org.mockito:mockito-core:$mockitoVersion" //Mockito test double library
+    androidTestImplementation "com.linkedin.dexmaker:dexmaker-mockito:$dexMakerVersion" //this is required to use Mockito in an Android project, because Mockito needs to generate classes at runtime, on Android, this is done using something called dex bytecode, and it's used in this library to enable Mockito to generate objects during runtime on Android
+
 
 
     // Dependencies for Android instrumented unit tests
