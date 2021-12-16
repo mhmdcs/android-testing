@@ -1,6 +1,7 @@
 package com.example.android.architecture.blueprints.todoapp
 
 import android.content.Context
+import androidx.annotation.VisibleForTesting
 import androidx.room.Room
 import com.example.android.architecture.blueprints.todoapp.data.source.DefaultTasksRepository
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource
@@ -8,6 +9,7 @@ import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepo
 import com.example.android.architecture.blueprints.todoapp.data.source.local.TasksLocalDataSource
 import com.example.android.architecture.blueprints.todoapp.data.source.local.ToDoDatabase
 import com.example.android.architecture.blueprints.todoapp.data.source.remote.TasksRemoteDataSource
+import kotlinx.coroutines.runBlocking
 
 //object keyword in Kotlin creates a singleton class. It is used to obtain a data type with a single implementation.
 //basically, it ensures you that only one instance of that class is created even if 2 threads try to create it.
@@ -15,9 +17,12 @@ import com.example.android.architecture.blueprints.todoapp.data.source.remote.Ta
 //the purpose of the singleton class is to control object creation, limiting the number of objects to only one. The singleton allows only one entry point to create the new instance of the class.
 object ServiceLocator { //ServiceLocator class purpose is to be able to construct(create) and store a repository
 
+    private val lock = Any()
+
     private var database: ToDoDatabase? = null
     @Volatile //Annotate the repository with @Volatile because it could be used and requested by multiple threads
     var tasksRepository: TasksRepository? = null
+        @VisibleForTesting set //VisibleForTesting annotation means that the reason a certain method (or object) is public is because of testing, means that it the normal main code, you should never be able to call this setter method, but in test/androidTest source sets you can.
 
 
 
@@ -53,6 +58,28 @@ object ServiceLocator { //ServiceLocator class purpose is to be able to construc
         ).build()
         database = result
         return result
+    }
+
+
+
+    /*One of the downsides of using a service locator is that it is a shared singleton.
+    In addition to needing to reset the state of the repository in the service locator when the test finishes, you cannot run tests in parallel.
+    This doesn't happen when you use dependency injection which is one of the reasons to prefer constructor dependency injection when you can use it.
+    Which is why we're going to create a testing specific method called resetRepository which clears out the database and sets both the repository and database back to null*/
+    @VisibleForTesting //mark this VisibleForTesting because you'll only ever want to reset the repository from within tests
+    fun resetRepository() {
+        synchronized(lock) {
+            runBlocking {
+                TasksRemoteDataSource.deleteAllTasks()
+            }
+            // Clear all data to avoid test pollution.
+            database?.apply {
+                clearAllTables()
+                close()
+            }
+            database = null
+            tasksRepository = null
+        }
     }
 
 }
