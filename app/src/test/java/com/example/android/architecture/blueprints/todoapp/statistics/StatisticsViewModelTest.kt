@@ -3,10 +3,13 @@ package com.example.android.architecture.blueprints.todoapp.statistics
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.android.architecture.blueprints.todoapp.MainCoroutineRule
 import com.example.android.architecture.blueprints.todoapp.data.source.FakeTestRepository
+import com.example.android.architecture.blueprints.todoapp.getOrAwaitValue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.hamcrest.CoreMatchers.`is`
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
+import org.junit.Test
 
 @ExperimentalCoroutinesApi
 class StatisticsViewModelTest {
@@ -32,5 +35,22 @@ class StatisticsViewModelTest {
         tasksRepository = FakeTestRepository()
 
         statisticsViewModel = StatisticsViewModel(tasksRepository)
+    }
+
+    @Test
+    fun loadTasks_loading(){
+
+        //WHEN - refresh occurs
+        mainCoroutineRule.pauseDispatcher() //TestCoroutineDispatcher pauses the coroutine right before the viewModelScope.launch in refresh() so that we can capture that the dataLoading was set to true
+
+        statisticsViewModel.refresh()
+
+        //THEN - verify(assert) that the refresh icon appears and then disappears
+        assertThat(statisticsViewModel.dataLoading.getOrAwaitValue(), `is`(true))
+
+        mainCoroutineRule.resumeDispatcher() //TestCoroutineDispatcher resumes and executes all of the coroutine inside the viewModelScope.launch in refresh() immediately so that we can capture that the dataLoading was set to false
+
+        assertThat(statisticsViewModel.dataLoading.getOrAwaitValue(), `is`(false))
+
     }
 }

@@ -40,12 +40,13 @@ class DefaultTasksRepositoryTest {
 
         //Get a reference to the class under test
         tasksRepository = DefaultTasksRepository(
-            // TODO Dispatchers.Unconfined should be replaced with Dispatchers.Main
+            // TODO Dispatchers. Unconfined should be replaced with Dispatchers.Main
             //  this requires understanding more about coroutines + testing
             //  so we will keep this as Unconfined for now. THIS IS NOT BEST PRACTICE.
             //  Update: You have now created a custom JUnit rule MainCoroutineRule() that swaps Dispatchers.Main with TestCoroutineDispatcher
             //  now you can use Dispatchers.Main instead of Dispatchers.Unconfined.
-            //  Do note that similar to the TestCoroutineDispatcher, Dispatchers.Unconfined executes tasks immediately, but it doesn't include all of the other testing benefits of the TestCoroutineDispatcher, such as being able to pause execution, thus for tests a TestCoroutineDispatcher is preferable and we switched to it using MainCoroutineRule
+            //  Do note that similar to the TestCoroutineDispatcher, Dispatchers.Unconfined executes tasks immediately, but it doesn't include all
+           //   of the other testing benefits of the TestCoroutineDispatcher, such as being able to pause and resume coroutine execution with pauseDispatcher() and resumeDispatcher() methods, and other methods to control time like advanceTimeBy(), advanceUntilIdle(), and runCurrent(), thus for tests a TestCoroutineDispatcher is preferable and we switched to it using MainCoroutineRule
             tasksRemoteDataSource,tasksLocalDataSource, Dispatchers.Main) //
     }
 
