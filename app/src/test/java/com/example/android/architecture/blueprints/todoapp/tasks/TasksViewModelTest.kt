@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.android.architecture.blueprints.todoapp.Event
+import com.example.android.architecture.blueprints.todoapp.MainCoroutineRule
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.FakeTestRepository
@@ -61,21 +62,23 @@ class TasksViewModelTest {
 
     }
 
-    //Swap the Main dispatcher that comes with the viewModelScope with a testDispatcher from TestCoroutineDispatcher
-    private val testDispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()
 
-    //Create a @Before method that calls Dispatchers.setMain(testDispatcher) before every test.
-    @Before
-    fun setupDispatcher(){
-        Dispatchers.setMain(testDispatcher)
-    }
-
-    //Create an @After method that cleans everything up after running each test by calling Dispatchers.resetMain() and then testDispatcher.cleanupTestCoroutines().
-    @After
-    fun tearDownDispatcher(){
-        Dispatchers.resetMain()
-        testDispatcher.cleanupTestCoroutines()
-    }
+    @get:Rule
+    var mainCoroutineRule = MainCoroutineRule()
+    //below code is no longer needed since we created a reusable custom JUnit rule that does all of this named MainCoroutineRule
+//    //Swap the Main dispatcher that comes with the viewModelScope with a testDispatcher from TestCoroutineDispatcher
+//    private val testDispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()
+//    //Create a @Before method that calls Dispatchers.setMain(testDispatcher) before every test.
+//    @Before
+//    fun setupDispatcher(){
+//        Dispatchers.setMain(testDispatcher)
+//    }
+//    //Create an @After method that cleans everything up after running each test by calling Dispatchers.resetMain() and then testDispatcher.cleanupTestCoroutines().
+//    @After
+//    fun tearDownDispatcher(){
+//        Dispatchers.resetMain()
+//        testDispatcher.cleanupTestCoroutines()
+//    }
 
     //create LiveDataTestUtil.kt file class so you can use the getOrAwaitValue Kotlin extension function
 
