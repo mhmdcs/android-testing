@@ -64,6 +64,7 @@ class StatisticsViewModel(private val tasksRepository: TasksRepository) : ViewMo
     val dataLoading: LiveData<Boolean> = _dataLoading
     val error: LiveData<Boolean> = tasks.map { it is Error }
     val empty: LiveData<Boolean> = tasks.map { (it as? Success)?.data.isNullOrEmpty() }
+    //These error and empty values above represent whether or not tasks loaded properly. If there is an error, error and empty should both be true when you're testing error-handling in StatisticsViewModelTest
 
     fun refresh() {
         _dataLoading.value = true
