@@ -5,10 +5,18 @@ import androidx.lifecycle.Observer
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.android.architecture.blueprints.todoapp.Event
+import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.FakeTestRepository
 import com.example.android.architecture.blueprints.todoapp.getOrAwaitValue
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.setMain
+import kotlinx.coroutines.withContext
 import org.hamcrest.CoreMatchers.*
+import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -16,8 +24,9 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 
-//Add the AndoirdJUnit4 test runner if you're using AndroidX Test library code
+//Add the AndroidJUnit4 test runner if you're using AndroidX Test library code
 //@RunWith(AndroidJUnit4::class)
+@ExperimentalCoroutinesApi
 class TasksViewModelTest {
 
 
@@ -50,6 +59,22 @@ class TasksViewModelTest {
 
         tasksViewModel = TasksViewModel(tasksRepository)
 
+    }
+
+    //Swap the Main dispatcher that comes with the viewModelScope with a testDispatcher from TestCoroutineDispatcher
+    private val testDispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()
+
+    //Create a @Before method that calls Dispatchers.setMain(testDispatcher) before every test.
+    @Before
+    fun setupDispatcher(){
+        Dispatchers.setMain(testDispatcher)
+    }
+
+    //Create an @After method that cleans everything up after running each test by calling Dispatchers.resetMain() and then testDispatcher.cleanupTestCoroutines().
+    @After
+    fun tearDownDispatcher(){
+        Dispatchers.resetMain()
+        testDispatcher.cleanupTestCoroutines()
     }
 
     //create LiveDataTestUtil.kt file class so you can use the getOrAwaitValue Kotlin extension function
@@ -139,5 +164,21 @@ class TasksViewModelTest {
         assertThat(value,`is`(true))
     }
 
+    @Test
+    fun completeTask_dataAndSnackbarUpdated(){
+        //GIVEN - An active task exists in the repository
+        val task = Task("Title","DESC")
+        tasksRepository.addTasks(task)
+
+        //WHEN - the task is marked as complete
+        tasksViewModel.completeTask(task, true)
+
+        //THEN- verify(assert) that the task is completed AND that the snackbar has been updated with the correct text
+        assertThat(tasksRepository.tasksServiceData[task.id]?.isCompleted, `is`(true))
+
+        val snackbarText: Event<Int> = tasksViewModel.snackbarText.getOrAwaitValue()
+        assertThat(snackbarText.getContentIfNotHandled(), `is`(R.string.task_marked_complete))
+
+    }
 
 }
