@@ -36,7 +36,7 @@ class TasksViewModel( private val tasksRepository: TasksRepository) : ViewModel(
 
     // Note, for testing and architecture purposes, it's bad practice to construct the repository
     // here. We'll show you how to fix this during the codelab
-//     private val tasksRepository = DefaultTasksRepository.getRepository(application) //we're commenting this out because we're constructing the repository in the class constructor now. This is a Constructor Dependency Injection now.
+    //private val tasksRepository = DefaultTasksRepository.getRepository(application) //we're commenting this out because now we're constructing the repository in the class constructor now. This is a Constructor Dependency Injection now.
 
 //Since you changed the constructor, you now need to use a ViewModelProvider.Factory to construct TasksViewModel.
 //You'll put the factory class in the same file as the TasksViewModel, but you could also put it in its own file.

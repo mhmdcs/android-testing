@@ -16,7 +16,14 @@
 
 package com.example.android.architecture.blueprints.todoapp.addedittask
 
+import android.app.Activity
 import android.app.Application
+import android.app.PendingIntent.getActivity
+import android.content.Context
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import androidx.annotation.Nullable
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.*
 import com.example.android.architecture.blueprints.todoapp.Event
 import com.example.android.architecture.blueprints.todoapp.R
@@ -24,17 +31,29 @@ import com.example.android.architecture.blueprints.todoapp.TodoApplication
 import com.example.android.architecture.blueprints.todoapp.data.Result.Success
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.DefaultTasksRepository
+import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository
+import com.example.android.architecture.blueprints.todoapp.statistics.StatisticsViewModel
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
 /**
  * ViewModel for the Add/Edit screen.
  */
-class AddEditTaskViewModel(application: Application) : AndroidViewModel(application) {
+class AddEditTaskViewModel(private val tasksRepository: TasksRepository) : ViewModel() {
 
     // Note, for testing and architecture purposes, it's bad practice to construct the repository
     // here. We'll show you how to fix this during the codelab
-//    private val tasksRepository = DefaultTasksRepository.getRepository(application) //this used the repository from getRepository method from the companion object in DefaultTasksRepository that we commented out
-    private val tasksRepository = (application as TodoApplication).taskRepository //this uses the repository from the ServiceLocator that's used in the ToDoApplication application class
+    // private val tasksRepository = DefaultTasksRepository.getRepository(application) //we're commenting this out because now we're constructing the repository in the class constructor now. This is a Constructor Dependency Injection now.
+    @Suppress("UNCHECKED_CAST")
+    class AddEditTaskViewModelFactory (
+            private val tasksRepository: TasksRepository
+    ) : ViewModelProvider.NewInstanceFactory() {
+        override fun <T : ViewModel> create(modelClass: Class<T>) =
+                (AddEditTaskViewModel(tasksRepository) as T)
+    }
+    //Since you changed the constructor, you now need to use a ViewModelProvider.Factory to construct AddEditTaskViewModel.
+    //You'll put the factory class in the same file as the AddEditTaskViewModel, but you could also put it in its own file.
+
 
     // Two-way databinding, exposing MutableLiveData
     val title = MutableLiveData<String>()
@@ -122,7 +141,9 @@ class AddEditTaskViewModel(application: Application) : AndroidViewModel(applicat
             val task = Task(currentTitle, currentDescription, taskCompleted, currentTaskId)
             updateTask(task)
         }
+
     }
+
 
     private fun createTask(newTask: Task) = viewModelScope.launch {
         tasksRepository.saveTask(newTask)

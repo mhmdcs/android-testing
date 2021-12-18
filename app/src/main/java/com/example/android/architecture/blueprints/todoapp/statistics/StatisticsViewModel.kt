@@ -24,17 +24,29 @@ import com.example.android.architecture.blueprints.todoapp.data.Result.Error
 import com.example.android.architecture.blueprints.todoapp.data.Result.Success
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.DefaultTasksRepository
+import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository
+import com.example.android.architecture.blueprints.todoapp.taskdetail.TaskDetailViewModel
 import kotlinx.coroutines.launch
 
 /**
  * ViewModel for the statistics screen.
  */
-class StatisticsViewModel(application: Application) : AndroidViewModel(application) {
+class StatisticsViewModel(private val tasksRepository: TasksRepository) : ViewModel() {
 
     // Note, for testing and architecture purposes, it's bad practice to construct the repository
     // here. We'll show you how to fix this during the codelab
-//    private val tasksRepository = DefaultTasksRepository.getRepository(application) //this used the repository from getRepository method from the companion object in DefaultTasksRepository that we commented out
-    private val tasksRepository = (application as TodoApplication).taskRepository //this uses the repository from the ServiceLocator that's used in the ToDoApplication application class
+    // private val tasksRepository = DefaultTasksRepository.getRepository(application) //we're commenting this out because now we're constructing the repository in the class constructor now. This is a Constructor Dependency Injection now.
+    @Suppress("UNCHECKED_CAST")
+    class StatisticsViewModelFactory (
+            private val tasksRepository: TasksRepository
+    ) : ViewModelProvider.NewInstanceFactory() {
+        override fun <T : ViewModel> create(modelClass: Class<T>) =
+                (StatisticsViewModel(tasksRepository) as T)
+    }
+
+
+    //Since you changed the constructor, you now need to use a ViewModelProvider.Factory to construct StatisticsViewModel.
+    //You'll put the factory class in the same file as the StatisticsViewModel, but you could also put it in its own file.
 
     private val tasks: LiveData<Result<List<Task>>> = tasksRepository.observeTasks()
     private val _dataLoading = MutableLiveData<Boolean>(false)
