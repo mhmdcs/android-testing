@@ -87,9 +87,9 @@ dependencies {
 
 
 
-    //unit test libraries
+    //local test libraries
 
-    // Dependencies for local unit tests. Hamcrest assertion framework is optional for more readable tests
+    //Dependencies for local unit tests. Hamcrest assertion framework is optional for more readable tests
     testImplementation "junit:junit:$junitVersion"
     testImplementation "org.hamcrest:hamcrest-all:$hamcrestVersion"
 
@@ -98,8 +98,8 @@ dependencies {
     testImplementation "org.robolectric:robolectric:$robolectricVersion" //Robolectric library creates a simulated Android environment specifically for local tests
     testImplementation "androidx.test.ext:junit-ktx:$androidXTestExtKotlinRunnerVersion"
 
-    //InstantTaskExecutorRule dependency for testing LiveData
-    testImplementation "androidx.arch.core:core-testing:$archTestingVersion"
+    //contains InstantTaskExecutorRule for testing Architecture Components like LiveData and Room - This rule executes each task synchronously when you're testing Architecture Components
+    testImplementation "androidx.arch.core:core-testing:$archTestingVersion" //this is the implementation of the Architecture Components testing library for local tests
 
     //testing coroutines dependency
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
@@ -107,7 +107,7 @@ dependencies {
 
 
 
-    //integration instrumented test libraries
+    //instrumented test libraries
 
     // AndroidX Test - Instrumented testing
     androidTestImplementation "androidx.test.ext:junit:$androidXTestExtKotlinRunnerVersion"
@@ -119,10 +119,11 @@ dependencies {
     androidTestImplementation "com.linkedin.dexmaker:dexmaker-mockito:$dexMakerVersion" //this is required to use Mockito in an Android project, because Mockito needs to generate classes at runtime, on Android, this is done using something called dex bytecode, and it's used in this library to enable Mockito to generate objects during runtime on Android
 
 
-
     // Dependencies for Android instrumented unit tests
     androidTestImplementation "junit:junit:$junitVersion" //we've implemented this before, but for the test(unit) source set, this uses androidTestImplementation so it'l lbe in the androidTest source set
     androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion" //we've implemented this before, but for the test(unit) source set, this uses androidTestImplementation so it'l lbe in the androidTest source set
+    //contains InstantTaskExecutorRule for testing Architecture Components like LiveData and Room - This rule executes each task synchronously when you're testing Architecture Components
+    androidTestImplementation "androidx.arch.core:core-testing:$archTestingVersion" //this is the implementation of the Architecture Components testing library for instrumented tests
 
     // Testing code should not be included in the main code.
     // Once https://issuetracker.google.com/128612536 is fixed this can be fixed.

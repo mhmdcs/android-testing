@@ -60,7 +60,7 @@ class StatisticsViewModelTest {
         tasksRepository.setReturnError(true)
         statisticsViewModel.refresh()
 
-        //THEN - verify(assert) that empty and error values in the ViewModel are true
+        //THEN - verify(assert) that empty and error values in the ViewModel are true (which triggers an error message to be shown)
         assertThat(statisticsViewModel.empty.getOrAwaitValue(),`is`(true))
         assertThat(statisticsViewModel.error.getOrAwaitValue(),`is`(true))
     }
