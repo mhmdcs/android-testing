@@ -43,7 +43,7 @@ class TasksDaoTest {
         database = Room.inMemoryDatabaseBuilder( //normal database are meant to persist on-disk, in comparison, an in-memory database will be completely deleted once the process is killed and that's because it's never stored on-disk, note that this is something you would never want in production code, but it's perfect for our unit tests
                 ApplicationProvider.getApplicationContext(), //get the application context from the AndroidX Test library
                 ToDoDatabase::class.java //tell the builder what database class to use
-                ).allowMainThreadQueries().build()
+                ).allowMainThreadQueries().build() //Normally Room doesn't allow database queries to be run on the main thread. Calling allowMainThreadQueries turns off this check. Don't do this in production code! This is just for testing purposes.
     }
 
     @After //@After method for cleaning up your database using database.close()

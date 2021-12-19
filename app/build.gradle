@@ -120,8 +120,8 @@ dependencies {
 
 
     // Dependencies for Android instrumented unit tests
-    androidTestImplementation "junit:junit:$junitVersion" //we've implemented this before, but for the test(unit) source set, this uses androidTestImplementation so it'l lbe in the androidTest source set
-    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion" //we've implemented this before, but for the test(unit) source set, this uses androidTestImplementation so it'l lbe in the androidTest source set
+    androidTestImplementation "junit:junit:$junitVersion" //we've implemented this before, but for the test(unit) source set, this uses androidTestImplementation so it'll be in the androidTest source set
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion" //we've implemented this before, but for the test(unit) source set, this uses androidTestImplementation so it'll  be in the androidTest source set
     //contains InstantTaskExecutorRule for testing Architecture Components like LiveData and Room - This rule executes each task synchronously when you're testing Architecture Components
     androidTestImplementation "androidx.arch.core:core-testing:$archTestingVersion" //this is the implementation of the Architecture Components testing library for instrumented tests
 
