@@ -5,7 +5,7 @@ import androidx.test.espresso.idling.CountingIdlingResource
 //Espresso idling resources act as a synchronization mechanism for Espresso tests and your long running operations
 //You'll make two types of Espresso idling resources, CountingIdlingResource and DatabindingIdlingResource
 //CountingIdlingResource makes Espresso wait during long-running tasks involving the network and database operations
-//DatabindingIdlingResource helps Espresso stay in-sync with databinding and views
+//DatabindingIdlingResource helps Espresso stay in-sync with databinding and views, you'll make this in the androidTest source set and not here
 
 //kotlin's object keyword to make a singleton class,
 object EspressoIdlingResource {
