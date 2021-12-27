@@ -121,7 +121,6 @@ dependencies {
     androidTestImplementation "org.mockito:mockito-core:$mockitoVersion" //Mockito test double library
     androidTestImplementation "com.linkedin.dexmaker:dexmaker-mockito:$dexMakerVersion" //this is required to use Mockito in an Android project, because Mockito needs to generate classes at runtime, on Android, this is done using something called dex bytecode, and it's used in this library to enable Mockito to generate objects during runtime on Android
 
-
     // Dependencies for Android instrumented unit tests
     androidTestImplementation "junit:junit:$junitVersion" //we've implemented this before, but for the test(unit) source set, this uses androidTestImplementation so it'll be in the androidTest source set
     androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion" //we've implemented this before, but for the test(unit) source set, this uses androidTestImplementation so it'll  be in the androidTest source set

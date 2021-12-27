@@ -23,8 +23,9 @@ import timber.log.Timber.DebugTree
 
 /**
  * An application that lazily provides a repository. Note that this Service Locator pattern is
- * used to simplify the sample. Consider a Dependency Injection framework.
- *
+ * used to simplify the sample. Consider a Dependency Injection framework like Koin or Dagger (or Dagger's wrapper Hilt).
+ * Note that Koin is a service-locator framework, while Dagger/or Hilt are actual Dependency Injection frameworks.
+ * But both do the same job more or less. Koin for small projects, Dagger/Hilt for big ones.
  * Also, sets up Timber in the DEBUG BuildConfig. Read Timber's documentation for production setups.
  */
 class TodoApplication : Application() {

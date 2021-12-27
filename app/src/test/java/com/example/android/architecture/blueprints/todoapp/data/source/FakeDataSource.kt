@@ -12,6 +12,7 @@ class FakeDataSource(var  tasks: MutableList<Task>? = mutableListOf()): TasksDat
 
     //write fake version of the methods with "real enough" and "working" implementation, but much less complicated than the real one.
 
+
     override suspend fun getTasks(): Result<List<Task>> {
         //If tasks isn't null, you should return a Success result. If tasks is null, then you should return an Error result.
 
